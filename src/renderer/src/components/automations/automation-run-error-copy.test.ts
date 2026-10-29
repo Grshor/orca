@@ -24,6 +24,18 @@ describe('automationRunErrorText', () => {
     ).toBe(es.automations.runFailures.projectSetupState.settingUp)
   })
 
+  it("names the stopped WSL distro in its run's failure", () => {
+    expect(
+      automationRunErrorText(automationRunFailure('wslDistroStopped', { distro: 'Ubuntu' }))
+    ).toBe(
+      'The WSL distro Ubuntu is stopped, so this scheduled run did not start it. Start the distro or use Run now; later runs go ahead while it runs.'
+    )
+    // Without its distro the record keeps the stored English.
+    expect(
+      automationRunErrorText({ error: 'Stored', errorCode: 'wslDistroStopped', errorParams: {} })
+    ).toBe('Stored')
+  })
+
   it('shows the stored English for uncoded, unknown, or unusable failures', async () => {
     i18n.addResourceBundle('es', 'translation', es)
     await i18n.changeLanguage('es')
