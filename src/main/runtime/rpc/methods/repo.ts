@@ -20,6 +20,7 @@ import {
   ProjectGroupUpdate,
   RepoClone,
   RepoCreate,
+  RepoHooksCheck,
   RepoIssueCommandWrite,
   RepoPath,
   RepoReorder,
@@ -247,8 +248,9 @@ export const REPO_METHODS = [
   defineMethod({
     name: 'repo.hooksCheck',
     permission: 'workspace',
-    params: RepoSelector,
-    handler: async (params, { runtime }) => runtime.checkRepoHooks(params.repo)
+    params: RepoHooksCheck,
+    handler: async (params, { runtime }) =>
+      runtime.checkRepoHooks(params.repo, { background: params.background === true })
   }),
   defineMethod({
     name: 'repo.setupScriptImports',
