@@ -97,4 +97,55 @@ describe('a passive restore of a WSL bridge pane (E9)', () => {
     expect(spawns).toBe(1)
     expect(readState).not.toHaveBeenCalled()
   })
+
+  describe('a background start from main (orchestration, automations, recovery)', () => {
+    const fresh = () =>
+      adapter.spawn({
+        cols: 80,
+        rows: 24,
+        cwd: WSL_CWD,
+        isNewSession: true,
+        wslBackgroundStart: true
+      })
+
+    it('holds a new terminal too, starting nothing, while the distro is stopped', async () => {
+      const error = await fresh().catch((caught: unknown) => caught)
+      expect(error instanceof Error ? parseWslDistroStoppedHold(error.message) : null).toBe(
+        'Ubuntu'
+      )
+      expect(spawns).toBe(0)
+    })
+
+    it('holds its restore of a saved pane', async () => {
+      const held = await adapter
+        .spawn({
+          cols: 80,
+          rows: 24,
+          cwd: WSL_CWD,
+          sessionId: SESSION_ID,
+          wslBackgroundStart: true
+        })
+        .catch((caught: unknown) => caught)
+      expect(held instanceof Error ? parseWslDistroStoppedHold(held.message) : null).toBe('Ubuntu')
+      expect(spawns).toBe(0)
+    })
+
+    it('starts once a settled read proves the distro running', async () => {
+      readState.mockResolvedValue('running')
+      await fresh()
+      expect(spawns).toBe(1)
+    })
+
+    it('leaves a non-WSL start alone', async () => {
+      await adapter.spawn({
+        cols: 80,
+        rows: 24,
+        cwd: 'C:\\repo',
+        isNewSession: true,
+        wslBackgroundStart: true
+      })
+      expect(spawns).toBe(1)
+      expect(readState).not.toHaveBeenCalled()
+    })
+  })
 })
