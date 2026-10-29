@@ -471,9 +471,10 @@ async function restartThroughBridgeConpty(): Promise<Receipt> {
     }
   )
   let output = ''
-  let firstPaintMs: number | null = null
+  // ConPTY's own startup repaint, before the distro has produced anything.
+  let conptyStartupOutputMs: number | null = null
   terminal.onData((data) => {
-    firstPaintMs ??= Math.round(performance.now() - started)
+    conptyStartupOutputMs ??= Math.round(performance.now() - started)
     output += data
   })
   try {
@@ -484,7 +485,7 @@ async function restartThroughBridgeConpty(): Promise<Receipt> {
       120_000,
       50
     )
-    return { firstPaintMs, firstOutputMs: Math.round(performance.now() - started) }
+    return { conptyStartupOutputMs, firstOutputMs: Math.round(performance.now() - started) }
   } finally {
     terminal.kill()
   }
@@ -569,7 +570,7 @@ async function distroRestartBaseline(): Promise<void> {
     medianHostPhases: medianWslOrcadEnsurePhases(host.map((run) => run.phases)),
     medianBridgeExecLowerBoundMs: median(bridge, 'firstOutputMs'),
     bridgeConpty: conpty,
-    medianBridgeConptyFirstPaintMs: median(conpty, 'firstPaintMs'),
+    medianBridgeConptyStartupOutputMs: median(conpty, 'conptyStartupOutputMs'),
     medianBridgeConptyFirstOutputMs: median(conpty, 'firstOutputMs')
   }
   receipt.orcadStartupProfiles = await profileOrcadRestart(repoPath)
@@ -598,7 +599,7 @@ describe.runIf(RUN && process.platform === 'win32')('WSL distro idle release', (
     RELEASE_BUDGET_MS + 2 * HELD_WITH_TERMINAL_MS + 6 * 60_000
   )
 
-  // After the idle phase: six distro restarts, a warm-up and one profiled restart, each bounded.
+  // After the idle phase: nine distro restarts, a warm-up and one profiled restart, each bounded.
   it(
     'measures distro restart to first output for the WSL host and an old-bridge exec lower bound',
     distroRestartBaseline,
