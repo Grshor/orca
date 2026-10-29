@@ -19608,7 +19608,10 @@
       "hostOutage": {
         "offline": "{{hostName}} est hors ligne",
         "reconnecting": "{{hostName}} se reconnecte…",
-        "reconnect": "Reconnecter"
+        "reconnect": "Reconnecter",
+        "stopped": "{{distro}} est arrêté",
+        "start": "Démarrer",
+        "startToSend": "Démarrez {{distro}} pour envoyer."
       },
       "interruptedContinue": {
         "continue": "Continuer",

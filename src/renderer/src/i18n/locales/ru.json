@@ -19856,7 +19856,10 @@
       "hostOutage": {
         "offline": "{{hostName}} не в сети",
         "reconnecting": "Повторное подключение к {{hostName}}…",
-        "reconnect": "Подключиться снова"
+        "reconnect": "Подключиться снова",
+        "stopped": "{{distro}} остановлен",
+        "start": "Запустить",
+        "startToSend": "Запустите {{distro}}, чтобы отправить."
       },
       "interruptedContinue": {
         "continue": "Продолжить",

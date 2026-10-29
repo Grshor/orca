@@ -19681,6 +19681,7 @@
         "reconnecting": "{{hostName}} is reconnecting…",
         "reconnect": "Reconnect",
         "stopped": "{{distro}} is stopped",
+        "startToSend": "Start {{distro}} to send.",
         "start": "Start"
       },
       "interruptedContinue": {

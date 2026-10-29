@@ -19246,7 +19246,10 @@
       "hostOutage": {
         "offline": "{{hostName}} çevrimdışı",
         "reconnecting": "{{hostName}} yeniden bağlanıyor…",
-        "reconnect": "Yeniden bağlan"
+        "reconnect": "Yeniden bağlan",
+        "stopped": "{{distro}} durduruldu",
+        "start": "Başlat",
+        "startToSend": "Göndermek için {{distro}} dağıtımını başlatın."
       },
       "interruptedContinue": {
         "continue": "Devam et",

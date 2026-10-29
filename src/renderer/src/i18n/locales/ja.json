@@ -18907,7 +18907,10 @@
       "hostOutage": {
         "offline": "{{hostName}} はオフラインです",
         "reconnecting": "{{hostName}} に再接続しています…",
-        "reconnect": "再接続"
+        "reconnect": "再接続",
+        "stopped": "{{distro}} は停止しています",
+        "start": "開始",
+        "startToSend": "送信するには {{distro}} を開始してください。"
       },
       "interruptedContinue": {
         "continue": "続行",
